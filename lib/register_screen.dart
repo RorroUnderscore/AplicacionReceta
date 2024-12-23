@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-// import 'auth_service.dart';
-
 import 'login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -93,7 +91,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  // Navegamos a la pantalla de inicio de sesión
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => LoginScreen()),
