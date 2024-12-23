@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:aplicacion_recetas/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-// import 'auth_service.dart';
 import 'menu_principal.dart';
 
 import 'register_screen.dart';
@@ -75,7 +74,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               TextButton(
                 onPressed: () {
-                  // Navegamos a la pantalla de registro
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterScreen()),
