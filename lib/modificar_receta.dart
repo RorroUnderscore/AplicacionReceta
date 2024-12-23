@@ -70,7 +70,6 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
   Future<void> _guardarCambios() async {
     if (_formKey.currentState!.validate()) {
       try {
-        // Calcular el tiempo legible
         int horas = int.tryParse(_horaController.text) ?? 0;
         int minutos = int.tryParse(_minutosController.text) ?? 0;
         String tiempoLegible = '';
@@ -88,7 +87,6 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
 
         String? nuevaImagenUrl;
 
-        // Subir la nueva imagen si se seleccionó
         if (_imagen != null) {
           final storageRef = FirebaseStorage.instance.ref();
           final imagenRef = storageRef.child('recetas/${widget.recetaId}.jpg');
@@ -96,7 +94,6 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
           nuevaImagenUrl = await imagenRef.getDownloadURL();
         }
 
-        // Crear el mapa de actualización
         Map<String, dynamic> actualizacion = {
           'nombre': _nombreController.text,
           'hora': horas,
@@ -110,12 +107,10 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
           'pasos': _pasos,
         };
 
-        // Agregar la URL de la nueva imagen si existe
         if (nuevaImagenUrl != null) {
           actualizacion['imagen'] = nuevaImagenUrl;
         }
 
-        // Actualizar Firestore
         await recetaRef.update(actualizacion);
 
         ScaffoldMessenger.of(context).showSnackBar(
@@ -202,7 +197,7 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        initialValue: entry.value['cantidad'], // Mostrar la cantidad
+                        initialValue: entry.value['cantidad'],
                         onChanged: (value) => _ingredientes[index]['cantidad'] = value,
                         decoration: InputDecoration(labelText: 'Cantidad ${index + 1}'),
                       ),
@@ -210,7 +205,7 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
                     SizedBox(width: 10),
                     Expanded(
                       child: TextFormField(
-                        initialValue: entry.value['ingrediente'], // Mostrar el ingrediente
+                        initialValue: entry.value['ingrediente'],
                         onChanged: (value) => _ingredientes[index]['ingrediente'] = value,
                         decoration: InputDecoration(labelText: 'Ingrediente ${index + 1}'),
                       ),
@@ -237,7 +232,7 @@ class _ModificarRecetaScreenState extends State<ModificarReceta> {
                   children: [
                     Expanded(
                       child: TextFormField(
-                        initialValue: entry.value, // Aquí está correcto porque _pasos es List<String>
+                        initialValue: entry.value, // pasos es List<String>, dejar asi
                         onChanged: (value) => _pasos[index] = value,
                         decoration: InputDecoration(labelText: 'Paso ${index + 1}'),
                       ),
