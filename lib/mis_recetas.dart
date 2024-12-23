@@ -168,6 +168,9 @@ class MisRecetasScreen extends StatelessWidget {
   }
 }
 
+// Recordar borrar los test
+// se me olvido borrar esta, la borro?
+// Mejor dejalo así, no creo que rompa nada pero para que arriesgarse
 class EditarRecetaScreen extends StatelessWidget {
   final String recetaId;
 
