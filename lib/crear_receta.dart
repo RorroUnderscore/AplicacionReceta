@@ -47,12 +47,10 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
         if (minutos > 0) tiempoLegible += '$minutos min';
         if (horas == 0 && minutos == 0) tiempoLegible = '0 min';
 
-        // Mostrar mensaje de progreso
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Subiendo imagen...')),
         );
 
-        // Subir la imagen a Firebase Storage
         String imageUrl = await _uploadImageToFirebase(_imagen!);
         if (imageUrl.isEmpty) {
           ScaffoldMessenger.of(context).showSnackBar(
@@ -61,7 +59,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
           return;
         }
 
-        // Guardar los datos en Firestore
         await FirebaseFirestore.instance.collection('recetas').add({
           'nombre': _nombreController.text,
           'imagen': imageUrl,
@@ -75,12 +72,10 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
           'uid_usuario': FirebaseAuth.instance.currentUser?.uid,
         });
 
-        // Notificar éxito
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Receta creada con éxito')),
         );
 
-        // Regresar a la pantalla anterior
         Navigator.pop(context);
       } catch (e) {
         print('Error al crear la receta: $e');
@@ -97,22 +92,18 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
 
   Future<String> _uploadImageToFirebase(File image) async {
     try {
-      // Define la referencia en el Storage (carpeta "recetas" dentro de tu bucket)
       final ref = FirebaseStorage.instance
           .ref()
           .child('recetas/${DateTime.now().millisecondsSinceEpoch}.jpg');
 
-      // Subir la imagen
       await ref.putFile(image);
 
-      // Obtener la URL de descarga
       return await ref.getDownloadURL();
     } catch (e) {
       print('Error al subir la imagen: $e');
       return '';
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -126,7 +117,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
           key: _formKey,
           child: ListView(
             children: [
-              // Nombre de la receta
               TextFormField(
                 controller: _nombreController,
                 decoration: InputDecoration(labelText: 'Nombre de la receta'),
@@ -140,7 +130,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
                 },
               ),
 
-              // Foto de la receta
               SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _pickImage,
@@ -148,7 +137,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
               ),
               if (_imagen != null) Image.file(_imagen!),
 
-              // Tiempo de preparación
               SizedBox(height: 10),
               Row(
                 children: [
@@ -188,8 +176,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
                 ],
               ),
 
-
-              // Dificultad
               SizedBox(height: 10),
               DropdownButtonFormField<String>(
                 value: _dificultad,
@@ -212,11 +198,10 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
                 decoration: InputDecoration(labelText: 'Dificultad'),
               ),
 
-              // Ingredientes
               SizedBox(height: 10),
               Text('Ingredientes'),
-              SingleChildScrollView(  // Agregar un SingleChildScrollView
-                scrollDirection: Axis.vertical,  // Asegúrate de que se desplace en vertical
+              SingleChildScrollView( 
+                scrollDirection: Axis.vertical, 
                 child: Column(
                   children: List.generate(_ingredientes.length, (index) {
                     return ListTile(
@@ -268,10 +253,9 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
                 },
               ),
 
-              // Pasos
               SizedBox(height: 10),
               Text('Pasos'),
-              SingleChildScrollView(  // Agregar un SingleChildScrollView
+              SingleChildScrollView( 
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: List.generate(_pasos.length, (index) {
@@ -317,7 +301,6 @@ class _CrearRecetaScreenState extends State<CrearReceta> {
                 },
               ),
 
-              // Botón para enviar el formulario
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: _submitForm,
