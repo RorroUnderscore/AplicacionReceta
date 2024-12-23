@@ -25,7 +25,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   Future<void> _checkIfFavorite() async {
     try {
-      // Obtener el usuario actual autenticado
       final user = FirebaseAuth.instance.currentUser;
       
       if (user == null) {
@@ -39,10 +38,8 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
       if (userSnapshot.exists) {
         final userData = userSnapshot.data() as Map<String, dynamic>;
 
-        // Verificamos si 'favoritos' existe en los datos del usuario, sino inicializamos como una lista vacía
         final favoriteRecipes = List<String>.from(userData['favoritos'] ?? []); 
         
-        // Verificamos si la receta está en los favoritos
         setState(() {
           isFavorite = favoriteRecipes.contains(widget.recipeId);
         });
@@ -56,10 +53,8 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
   }
 
 
-  // Función para agregar la receta a los favoritos
   Future<void> _addToFavorites() async {
     try {
-      // Obtener el usuario actual autenticado
       final user = FirebaseAuth.instance.currentUser;
       
       if (user == null) {
@@ -72,12 +67,10 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
       
       if (userSnapshot.exists) {
         final userData = userSnapshot.data() as Map<String, dynamic>;
-        
-        // Verificamos si 'favoritos' existe en los datos del usuario, sino inicializamos como una lista vacía
-        List<String> favoriteRecipes = List<String>.from(userData['favoritos'] ?? []);
-        favoriteRecipes.add(widget.recipeId); // Añadimos la receta a los favoritos
 
-        // Actualizamos la lista de favoritos en Firestore
+        List<String> favoriteRecipes = List<String>.from(userData['favoritos'] ?? []);
+        favoriteRecipes.add(widget.recipeId);
+
         await userDoc.update({'favoritos': favoriteRecipes});
         print("Receta agregada a favoritos.");
       } else {
@@ -90,7 +83,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   Future<void> _removeFromFavorites() async {
     try {
-      // Obtener el usuario actual autenticado
       final user = FirebaseAuth.instance.currentUser;
       
       if (user == null) {
@@ -103,12 +95,10 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
       
       if (userSnapshot.exists) {
         final userData = userSnapshot.data() as Map<String, dynamic>;
-        
-        // Verificamos si 'favoritos' existe en los datos del usuario
+   
         List<String> favoriteRecipes = List<String>.from(userData['favoritos'] ?? []);
-        favoriteRecipes.remove(widget.recipeId); // Quitamos la receta de los favoritos
+        favoriteRecipes.remove(widget.recipeId);
 
-        // Actualizamos la lista de favoritos en Firestore
         await userDoc.update({'favoritos': favoriteRecipes});
         print("Receta eliminada de favoritos.");
       } else {
@@ -119,15 +109,14 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
     }
   }
 
-  // Función que se ejecuta cuando el botón es presionado
   void _toggleFavorite() async {
     if (isFavorite) {
-      await _removeFromFavorites();  // Si ya es favorito, lo quitamos
+      await _removeFromFavorites();
     } else {
-      await _addToFavorites();  // Si no es favorito, lo agregamos
+      await _addToFavorites();
     }
     setState(() {
-      isFavorite = !isFavorite;  // Cambiar el estado de favorito
+      isFavorite = !isFavorite;
     });
   }
 
@@ -160,7 +149,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Imagen de la receta
                   Image.network(
                     recetaData['imagen'] ?? '',
                     fit: BoxFit.cover,
@@ -169,14 +157,12 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                   ),
                   SizedBox(height: 16),
 
-                  // Nombre de la receta
                   Text(
                     recetaData['nombre'] ?? 'Sin nombre',
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   SizedBox(height: 8),
 
-                  // Nombre del usuario que creó la receta
                   FutureBuilder<DocumentSnapshot>(
                     future: FirebaseFirestore.instance.collection('usuarios').doc(usuarioId).get(),
                     builder: (context, userSnapshot) {
@@ -196,7 +182,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                   ),
                   SizedBox(height: 16),
 
-                  // Tiempo de preparación
                   Text(
                     'Tiempo de preparación: ${recetaData['tiempo'] ?? 'Desconocido'}',
                     style: Theme.of(context).textTheme.bodyMedium,
@@ -253,7 +238,6 @@ class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
                       : Text('No hay ingredientes disponibles.'),
                   SizedBox(height: 16),
 
-                  // Pasos
                   Text(
                     'Pasos:',
                     style: Theme.of(context).textTheme.headlineSmall,
