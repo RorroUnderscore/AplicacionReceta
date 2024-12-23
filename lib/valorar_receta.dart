@@ -36,7 +36,6 @@ class _ValorarRecetaPageState extends State<ValorarRecetaPage> {
       final recetaData = recetaSnapshot.data() as Map<String, dynamic>;
       List<dynamic> valoraciones = recetaData['valoraciones'] ?? [];
 
-      // cambia valoracion si el usuario ya valoro
       final existingIndex =
           valoraciones.indexWhere((v) => v['uid'] == user.uid);
       if (existingIndex != -1) {
@@ -56,7 +55,6 @@ class _ValorarRecetaPageState extends State<ValorarRecetaPage> {
       await recetaDoc.update({'valoraciones': valoraciones});
       print("Valoración guardada correctamente.");
 
-      // Calcular la valoración promedio y actualizar los campos relevantes
       double promedioValoracion = valoraciones
               .map((v) => v['puntaje'])
               .reduce((a, b) => a + b) /
@@ -67,7 +65,7 @@ class _ValorarRecetaPageState extends State<ValorarRecetaPage> {
         'numero_valoraciones': valoraciones.length,
       });
 
-      Navigator.pop(context); // Volver a la pantalla anterior
+      Navigator.pop(context);
     } catch (e) {
       print("Error al guardar la valoración: $e");
     }
