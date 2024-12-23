@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'detalle_receta.dart'; // Importamos la pantalla de detalles
+import 'detalle_receta.dart';
 
 class MenuPrincipal extends StatelessWidget {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -105,11 +105,11 @@ class MenuPrincipal extends StatelessWidget {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 200, // Limita la altura de la imagen
-                          width: double.infinity, // La imagen ocupará todo el ancho
+                          height: 200, // Si queri cambia la altura - R
+                          width: double.infinity,
                           child: Image.network(
                             imagenUrl,
-                            fit: BoxFit.cover, // Para ajustar la imagen sin distorsionarla
+                            fit: BoxFit.cover,
                           ),
                         ),
                         Padding(
